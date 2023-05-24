@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-import placeholderImg from "./images/dog_walking.svg";
+import Loading from "./components/Loading";
+import Empty from "./components/Empty";
+import DogItem from "./components/DogItem";
+import Button from "./components/Button";
 
 function App() {
   const [breeds, setBreeds] = useState([]);
@@ -60,15 +63,9 @@ useEffect(() => {
               </option>
             ))}
           </select>
-          <button
-            type="button"
-            className="btn btn-primary mx-2"
+          <Button
             disabled={!selectedBreed}
-            onClick={searchByBreed}
-            style={{color: "#fff", cursor: "pointer"}}
-          >
-            Search
-          </button>
+            onClick={searchByBreed} />
         </div>
         {dogImages.length > 0 && !isLoading && (
           <div className="px-5 mx-5 text-end" data-testid="results-count">
@@ -77,31 +74,19 @@ useEffect(() => {
         )}
         <div className="mt-5 d-flex justify-content-center flex-wrap px-5 mx-5">
           {dogImages.length === 0 && !isLoading && (
-            <img
-              src={placeholderImg}
-              className="mx-auto d-block mt-4 w-50"
-              alt=""
-            />
+            <Empty />
           )}
           {isLoading && (
-            <div className="d-flex align-items-center ">
-              <p className="h1 me-2">Loading</p>
-              <div
-                className="spinner-border ms-auto text-primary fs-3"
-                role="status"
-                aria-hidden="true"
-              ></div>
-            </div>
+            <Loading />
           )}
           {dogImages.length > 0 &&
             !isLoading &&
             dogImages.map((imgSrc, index) => (
-              <img
+
+              <DogItem
                 key={`${index}-${selectedBreed}`}
-                src={imgSrc}
-                className="img-thumbnail w-25"
-                alt={`${selectedBreed} ${index + 1} of ${dogImages.length}`}
-              />
+                imgSrc={imgSrc}
+                alt={`${selectedBreed} ${index + 1} of ${dogImages.length}`} />
             ))}
         </div>
       </main>
